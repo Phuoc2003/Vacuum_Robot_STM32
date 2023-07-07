@@ -6,7 +6,7 @@ TIM_HandleTypeDef htim2;
 
 float Dis = 0.0;
 uint16_t Trig_Ticks = 0;
-volatile uint8_t Run_State = 0;
+volatile uint8_t Run_State = 1;
 
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
@@ -25,7 +25,7 @@ int main(void)
   while (1)
   {
 	  Dis = HCSR04_Read();
-	  Run(Dis, Run_State);
+	  Run(Dis, &Run_State);
   }
 }
 
@@ -48,7 +48,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin == GPIO_PIN_10)
 		{
-			Run_State = !Run_State;
+			Run_State = 0;
 		}
 }
 
@@ -110,7 +110,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PA10 */
   GPIO_InitStruct.Pin = GPIO_PIN_10;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
